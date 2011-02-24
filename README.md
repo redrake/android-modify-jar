@@ -31,6 +31,13 @@ Links
  * dextopt-wrapper
    - http://www.netmite.com/android/mydroid/build/tools/dexpreopt/dexopt-wrapper/DexOptWrapper.cpp 
 
+Supplied Patches
+----------------
+
+Currently there is only one supplied patch:
+ - One which lets you disabled the irritating "Battery full, please remove charger" dialog box that appears every few minutes when charging your Samsung Epic 4G. To apply this change to your Epic 4g, insure you meet the requirements below and then run: 'modify\_jar.sh services.jar patches/epic_4g_services_disable_battery_popup.diff'
+
+
 How to use it
 -------------
 
