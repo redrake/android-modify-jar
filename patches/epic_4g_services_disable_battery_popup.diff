@@ -1,0 +1,116 @@
+diff -ur services_dex/com/android/server/status/StatusBarPolicy.smali services_dex_modified//com/android/server/status/StatusBarPolicy.smali
+--- services_dex/com/android/server/status/StatusBarPolicy.smali	2011-02-23 16:45:42.000000000 -0700
++++ services_dex_modified//com/android/server/status/StatusBarPolicy.smali	2011-02-23 10:00:59.937934997 -0700
+@@ -3821,111 +3821,7 @@
+ 
+ .method private showFullChargePopup()V
+     .registers 8
+-
+-    .prologue
+-    const/4 v6, 0x0
+-
+-    .line 1215
+-    const-string v4, "StatusBarPolicy"
+-
+-    const-string v5, "showFullChargePopup()"
+-
+-    invoke-static {v4, v5}, Landroid/util/Slog;->d(Ljava/lang/String;Ljava/lang/String;)I
+-
+-    .line 1217
+-    iget-object v4, p0, Lcom/android/server/status/StatusBarPolicy;->mContext:Landroid/content/Context;
+-
+-    const v5, 0x1040477
+-
+-    invoke-virtual {v4, v5}, Landroid/content/Context;->getString(I)Ljava/lang/String;
+-
+-    move-result-object v2
+-
+-    .line 1218
+-    .local v2, fullChargeText:Ljava/lang/CharSequence;
+-    iget-object v4, p0, Lcom/android/server/status/StatusBarPolicy;->mContext:Landroid/content/Context;
+-
+-    const v5, 0x1090077
+-
+-    invoke-static {v4, v5, v6}, Landroid/view/View;->inflate(Landroid/content/Context;ILandroid/view/ViewGroup;)Landroid/view/View;
+-
+-    move-result-object v3
+-
+-    .line 1220
+-    .local v3, v:Landroid/view/View;
+-    const v4, 0x102022e
+-
+-    invoke-virtual {v3, v4}, Landroid/view/View;->findViewById(I)Landroid/view/View;
+-
+-    move-result-object v4
+-
+-    check-cast v4, Landroid/widget/TextView;
+-
+-    iput-object v4, p0, Lcom/android/server/status/StatusBarPolicy;->mFullChargeTextView:Landroid/widget/TextView;
+-
+-    .line 1221
+-    iget-object v4, p0, Lcom/android/server/status/StatusBarPolicy;->mFullChargeTextView:Landroid/widget/TextView;
+-
+-    invoke-virtual {v4, v2}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
+-
+-    .line 1223
+-    new-instance v0, Landroid/app/AlertDialog$Builder;
+-
+-    iget-object v4, p0, Lcom/android/server/status/StatusBarPolicy;->mContext:Landroid/content/Context;
+-
+-    invoke-direct {v0, v4}, Landroid/app/AlertDialog$Builder;-><init>(Landroid/content/Context;)V
+-
+-    .line 1224
+-    .local v0, b:Landroid/app/AlertDialog$Builder;
+-    const/4 v4, 0x0
+-
+-    invoke-virtual {v0, v4}, Landroid/app/AlertDialog$Builder;->setCancelable(Z)Landroid/app/AlertDialog$Builder;
+-
+-    .line 1225
+-    const v4, 0x1040475
+-
+-    invoke-virtual {v0, v4}, Landroid/app/AlertDialog$Builder;->setTitle(I)Landroid/app/AlertDialog$Builder;
+-
+-    .line 1226
+-    invoke-virtual {v0, v3}, Landroid/app/AlertDialog$Builder;->setView(Landroid/view/View;)Landroid/app/AlertDialog$Builder;
+-
+-    .line 1227
+-    const v4, 0x104000a
+-
+-    invoke-virtual {v0, v4, v6}, Landroid/app/AlertDialog$Builder;->setPositiveButton(ILandroid/content/DialogInterface$OnClickListener;)Landroid/app/AlertDialog$Builder;
+-
+-    .line 1229
+-    invoke-virtual {v0}, Landroid/app/AlertDialog$Builder;->create()Landroid/app/AlertDialog;
+-
+-    move-result-object v1
+-
+-    .line 1230
+-    .local v1, d:Landroid/app/AlertDialog;
+-    iget-object v4, p0, Lcom/android/server/status/StatusBarPolicy;->mFullChargeListener:Landroid/content/DialogInterface$OnDismissListener;
+-
+-    invoke-virtual {v1, v4}, Landroid/app/AlertDialog;->setOnDismissListener(Landroid/content/DialogInterface$OnDismissListener;)V
+-
+-    .line 1231
+-    invoke-virtual {v1}, Landroid/app/AlertDialog;->getWindow()Landroid/view/Window;
+-
+-    move-result-object v4
+-
+-    const/16 v5, 0x7d9
+-
+-    invoke-virtual {v4, v5}, Landroid/view/Window;->setType(I)V
+-
+-    .line 1232
+-    invoke-virtual {v1}, Landroid/app/AlertDialog;->show()V
+-
+-    .line 1233
+-    iput-object v1, p0, Lcom/android/server/status/StatusBarPolicy;->mFullChargeDialog:Landroid/app/AlertDialog;
+-
+-    .line 1235
+-    const/16 v4, 0xd
+-
+-    invoke-direct {p0, v4}, Lcom/android/server/status/StatusBarPolicy;->playTone(I)V
+-
+-    .line 1239
++    
+     return-void
+ .end method
+ 

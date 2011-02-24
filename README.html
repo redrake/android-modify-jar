@@ -1,0 +1,157 @@
+<p><strong>THIS COMES WITH NO WARRANTY, YOU TAKE FULL RESPONSIBILITY IF IT KILLS YOUR DEVICE</strong></p>
+
+<h1>Introduction</h1>
+
+<p>These scripts allow you to easily modify existing system jar files on
+certain Android devices.</p>
+
+<p>This currently has only been tested on the Samsung Epic 4G with EB13, 
+but may work on other Froyo based devices.</p>
+
+<h2>Overview</h2>
+
+<p>The modify_jar.sh script uses a number of tools to:</p>
+
+<ul>
+<li>Download an existing jar/odex file from /system/framework</li>
+<li>Allow you either modify or apply an predefined patch to the specified jar/odex</li>
+<li>Push the modified jar/odex file to the device and have it integrated back into the device</li>
+</ul>
+
+<p>Why would you do this?</p>
+
+<ul>
+<li>Because you want to modify how the device works </li>
+<li>There is at least one predefined patch included in this package</li>
+</ul>
+
+<h2>Links</h2>
+
+<ul>
+<li>The tools in tools/ came from:
+<ul>
+<li>http://code.google.com/p/smali/</li>
+</ul></li>
+<li>dextopt-wrapper
+<ul>
+<li>http://www.netmite.com/android/mydroid/build/tools/dexpreopt/dexopt-wrapper/DexOptWrapper.cpp </li>
+</ul></li>
+</ul>
+
+<h2>How to use it</h2>
+
+<p>First before you get started you need to know that you risk
+bricking your device. Here are our assumptions</p>
+
+<ul>
+<li>Your running some type of unix (linux is what this was tested on)
+<ul>
+<li>Cygwin on windows may work, who knows ...</li>
+</ul></li>
+<li>You have the java JDK installed and in your path</li>
+<li>You have the android-sdk installed in your home directory
+<ul>
+<li>Modify the adb variable at the top of modify_jar.sh to point to your android sdk</li>
+</ul></li>
+<li>Your device is plugged into USB and in debugging mode</li>
+<li>You have rooted your device </li>
+<li>You have ClockWorkMod installed and have performed a recent backup of your device</li>
+<li>We have only tested this on the Samsung Epic 4G /w Froyo</li>
+</ul>
+
+<h3>First</h3>
+
+<ul>
+<li>Boot into the recovery console and make a backup of your device</li>
+</ul>
+
+<p>So there are two ways to use this script:</p>
+
+<h4>The easy way:</h4>
+
+<p>Apply a supplied patch:</p>
+
+<ul>
+<li>Locate the patch you want to apply, i.e. foo.diff</li>
+<li>Install the patch 'modify_jar.sh services.jar foo.diff'</li>
+<li>You may want to make sure your device is unlocked, as a pop-up will appear asking you to approve running a program as root - approve it.</li>
+<li>Reboot the device </li>
+</ul>
+
+<p>This will download the specified jar file, and apply the specified diff, and
+then push the modified jar file back to your device and fake the appropriate
+signature so android will not reject it.</p>
+
+<p>So for example:</p>
+
+<p>'modify_jar.sh services.jar patches\epic_4g_services_jar_disable_battery_popup.diff'</p>
+
+<p>May modify your services.jar to disable an annoying modal dialog box that pops up every 15 minutes
+on your Epic 4g - because apparently Samsung feels compelled to annoy you with pointless dialog boxes.</p>
+
+<h4>The developer way</h4>
+
+<p>This will allow you to create your own patches</p>
+
+<ul>
+<li>Determine what jar file you want to modify, i.e. services.jar</li>
+<li>Fetch the specified jar and decompile it into dex code 'modify_jar.sh services.jar'
+<ul>
+<li>(This will dump the dex code for this jar file into services_dex)</li>
+</ul></li>
+<li>Modify the dex code 
+<ul>
+<li>This is where the developer part comes in.</li>
+</ul></li>
+<li>Push the dex code in services_dex to the device 'modify_jar.sh services.jar services_dex'</li>
+<li>You may want to make sure your device is unlocked, as a popup will appear asking you to approve running a program as root - approve it.
+<ul>
+<li>Approve this program to run, if your going to be doing a lot of this.</li>
+</ul></li>
+<li>Reboot the device</li>
+</ul>
+
+<p>Once you get something that works you may want to put it into a patch, you can do this
+using the 'diff' command.</p>
+
+<p>diff -ur services_dex services_dex_modified > epic_4g_services_jar_disable_battery_popup.diff</p>
+
+<p>We suggest that you name your patches with [DEVICE]_[JAR]_[WHAT IT DOES].diff</p>
+
+<h2>What if something goes wrong?</h2>
+
+<p>Hopefully you backed up your device using ClockworkMod, if so then your in luck.</p>
+
+<ul>
+<li>Reboot your device into recovery mode (hint: You can run 'adb reboot recovery')</li>
+<li>Restore either the entire device or just the system directory ( You can restore just /system by going into 'Advanced Restore' in ClockworkMod)</li>
+<li>Reboot</li>
+</ul>
+
+<h2>How can I tell what went wrong?</h2>
+
+<h3>If a patch fails to be applied</h3>
+
+<p>So sometimes, a patch will not work, this is typically because the patch is incompatible with something on the
+device, or because it has already been applied. The first thing to do is to delete the 'framework/' directory.
+This will cause the script to get a new copy of the jars on your device. The next thing to do is to start looking
+at what caused the patch to failed to be applied; You could have specified the wrong jar file or it could simply
+be incompatible with your phone.</p>
+
+<h3>If the phone fails to boot</h3>
+
+<p>Well so as far as we can tell there are a few different errors to look for. 
+Start by running "adb logcat" and watching what happens when the device boots up.</p>
+
+<p>If you see something along the lines of 'DexOpt: mismatch dep signature' in the log it likely means that 
+Android rejected our attempt to convince it that the new odex file was indeed valid. You should start by 
+restoring the device to a working state.</p>
+
+<h2>Notes and Hints</h2>
+
+<ul>
+<li>adb reboot recovery - reboot into the recovery console</li>
+<li>adb logcat - look at the log, useful for figuring out what went wrong</li>
+<li>/sdcard/dex - where we do our on device work</li>
+<li>/sdcard/dex/backup - where we place the original odex file before we modify it</li>
+</ul>
